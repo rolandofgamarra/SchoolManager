@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Libreta de Calificaciones</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 1.5cm 1.8cm;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            color: #1e293b;
+            font-size: 10pt;
+            line-height: 1.5;
+        }
+
+        /* ── HEADER ─────────────────────────────── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #1e3a8a;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .header-left { flex: 1; }
+        .header-left h1 {
+            color: #1e3a8a;
+            font-size: 16pt;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+        .header-left p { color: #64748b; font-size: 9pt; margin-top: 2px; }
+        .header-right {
+            text-align: right;
+            font-size: 9pt;
+            color: #475569;
+        }
+        .header-right .badge {
+            display: inline-block;
+            background: #1e3a8a;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 8pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        /* ── STUDENT INFO BOX ───────────────────── */
+        .student-box {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid #1e3a8a;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 40px;
+        }
+        .student-box .field { flex: 1; }
+        .student-box .label {
+            font-size: 7.5pt;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .student-box .value {
+            font-size: 11pt;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 1px;
+        }
+        .student-box .value-sm {
+            font-size: 9.5pt;
+            font-weight: 600;
+            color: #334155;
+            margin-top: 1px;
+        }
+
+        /* ── SECTION TITLES ─────────────────────── */
+        .section-title {
+            font-size: 9.5pt;
+            font-weight: 800;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1.5px solid #bfdbfe;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+
+        /* ── TABLES ─────────────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 4px;
+            font-size: 9pt;
+        }
+        thead tr {
+            background-color: #1e3a8a;
+            color: white;
+        }
+        th {
+            padding: 7px 10px;
+            font-weight: 700;
+            font-size: 8.5pt;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        th.text-left { text-align: left; }
+        td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        td.text-left { text-align: left; }
+        tbody tr:nth-child(even) { background-color: #f8fafc; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        /* Calificación cualitativa badges */
+        .badge-E, .badge-A  { background:#dcfce7; color:#166534; }
+        .badge-MB, .badge-B { background:#dbeafe; color:#1e40af; }
+        .badge-Bk, .badge-C { background:#fef9c3; color:#854d0e; }
+        .badge-Ak, .badge-D { background:#ffedd5; color:#9a3412; }
+        .badge-I, .badge-F  { background:#fee2e2; color:#991b1b; }
+        .qual-badge {
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: 12px;
+            font-size: 8pt;
+            font-weight: 800;
+        }
+
+        /* Promedio general highlight */
+        .promedio-general {
+            background: #1e3a8a;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 16px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 6px;
+        }
+        .promedio-general .num { font-size: 20pt; font-weight: 900; }
+        .promedio-general .lbl { font-size: 7.5pt; opacity: 0.8; }
+
+        /* ── ATTENDANCE GRID ────────────────────── */
+        .attendance-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .att-card {
+            flex: 1;
+            min-width: 90px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        .att-card .num { font-size: 18pt; font-weight: 900; }
+        .att-card .lbl { font-size: 7.5pt; color: #64748b; margin-top: 2px; }
+        .att-pct {
+            font-size: 9pt;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+        .pct-ok  { background: #dcfce7; color: #166534; }
+        .pct-mid { background: #fef9c3; color: #854d0e; }
+        .pct-low { background: #fee2e2; color: #991b1b; }
+
+        /* ── RSA TABLE ──────────────────────────── */
+        .rsa-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .rsa-item {
+            flex: 1;
+            min-width: 130px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rsa-item .dim { font-size: 8.5pt; font-weight: 600; color: #334155; text-transform: capitalize; }
+        .rsa-badge {
+            font-size: 8pt;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .rsa-MB { background: #dcfce7; color: #166534; }
+        .rsa-B  { background: #dbeafe; color: #1e40af; }
+        .rsa-R  { background: #fef9c3; color: #854d0e; }
+        .rsa-I  { background: #fee2e2; color: #991b1b; }
+        .rsa-A  { background: #dcfce7; color: #166534; }
+
+        .observaciones-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 9pt;
+            color: #78350f;
+            margin-top: 8px;
+        }
+
+        /* ── SIGNATURES ─────────────────────────── */
+        .signatures {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            gap: 20px;
+        }
+        .sig-block { text-align: center; flex: 1; }
+        .sig-line {
+            border-top: 1.5px solid #334155;
+            width: 80%;
+            margin: 0 auto 6px auto;
+        }
+        .sig-label { font-size: 8.5pt; font-weight: 600; color: #475569; }
+        .sig-sublabel { font-size: 7.5pt; color: #94a3b8; margin-top: 2px; }
+
+        /* ── FOOTER ─────────────────────────────── */
+        .footer {
+            margin-top: 24px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 7.5pt;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-left">
+        <h1>SchoolManager Pro</h1>
+        <p>Sistema de Gestión Académica</p>
+    </div>
+    <div class="header-right">
+        <div class="badge">LIBRETA DE CALIFICACIONES</div>
+        <p>Período: <strong>{{ periodo_nombre }}</strong></p>
+        <p>Año Lectivo: <strong>{{ anio_lectivo }}</strong></p>
+        <p>Emisión: {{ fecha_emision }}</p>
+    </div>
+</div>
+
+<!-- STUDENT INFO -->
+<div class="student-box">
+    <div class="field">
+        <div class="label">Alumno</div>
+        <div class="value">{{ alumno.apellido }}, {{ alumno.nombre }}</div>
+    </div>
+    <div class="field">
+        <div class="label">Grado / Sección</div>
+        <div class="value-sm">{{ alumno.grado.nombre }} — Sección {{ alumno.seccion }}</div>
+    </div>
+    <div class="field">
+        <div class="label">Ciclo</div>
+        <div class="value-sm">{{ alumno.grado.get_ciclo_display }}</div>
+    </div>
+    <div class="field">
+        <div class="label">Fecha de Nac.</div>
+        <div class="value-sm">{{ alumno.fecha_nac|date:"d/m/Y" }}</div>
+    </div>
+</div>
+
+<!-- CALIFICACIONES -->
+<div class="section-title">Calificaciones por Materia</div>
+<table>
+    <thead>
+        <tr>
+            <th class="text-left" style="width:30%">Materia</th>
+            <th>Procesos<br><small style="opacity:.7;font-weight:400">(70%)</small></th>
+            <th>Evaluación<br><small style="opacity:.7;font-weight:400">(30%)</small></th>
+            <th>Promedio Final</th>
+            <th>Calificación</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in resultados %}
+        <tr>
+            <td class="text-left"><strong>{{ item.materia }}</strong></td>
+            <td>{{ item.promedio_proceso }}</td>
+            <td>{{ item.promedio_evaluacion }}</td>
+            <td><strong>{{ item.promedio }}</strong></td>
+            <td>
+                {% if item.calificacion_cualitativa == 'E' or item.calificacion_cualitativa == 'A' %}
+                    <span class="qual-badge badge-E">{{ item.calificacion_cualitativa }}</span>
+                {% elif item.calificacion_cualitativa == 'MB' or item.calificacion_cualitativa == 'B' %}
+                    <span class="qual-badge badge-MB">{{ item.calificacion_cualitativa }}</span>
+                {% elif item.calificacion_cualitativa == 'B' or item.calificacion_cualitativa == 'C' %}
+                    <span class="qual-badge badge-Bk">{{ item.calificacion_cualitativa }}</span>
+                {% elif item.calificacion_cualitativa == 'I' or item.calificacion_cualitativa == 'F' %}
+                    <span class="qual-badge badge-I">{{ item.calificacion_cualitativa }}</span>
+                {% else %}
+                    <span class="qual-badge badge-Ak">{{ item.calificacion_cualitativa }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Sin calificaciones registradas en este período.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if promedio_general %}
+<div style="text-align:right;margin-top:6px">
+    <div class="promedio-general">
+        <div class="lbl">PROMEDIO GENERAL</div>
+        <div class="num">{{ promedio_general }}</div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ASISTENCIA -->
+<div class="section-title">Registro de Asistencia</div>
+<div class="attendance-grid">
+    <div class="att-card">
+        <div class="num" style="color:#0f172a">{{ asistencia.total_dias }}</div>
+        <div class="lbl">Días totales</div>
+    </div>
+    <div class="att-card">
+        <div class="num" style="color:#166534">{{ asistencia.presentes }}</div>
+        <div class="lbl">Presentes</div>
+    </div>
+    <div class="att-card">
+        <div class="num" style="color:#854d0e">{{ asistencia.tardanzas }}</div>
+        <div class="lbl">Tardanzas</div>
+    </div>
+    <div class="att-card">
+        <div class="num" style="color:#b45309">{{ asistencia.ausentes_justificados }}</div>
+        <div class="lbl">Aus. Justificados</div>
+    </div>
+    <div class="att-card">
+        <div class="num" style="color:#991b1b">{{ asistencia.ausentes_injustificados }}</div>
+        <div class="lbl">Aus. Injustificados</div>
+    </div>
+    <div class="att-card">
+        {% if asistencia.porcentaje_asistencia >= 90 %}
+            <span class="att-pct pct-ok">{{ asistencia.porcentaje_asistencia }}%</span>
+        {% elif asistencia.porcentaje_asistencia >= 75 %}
+            <span class="att-pct pct-mid">{{ asistencia.porcentaje_asistencia }}%</span>
+        {% else %}
+            <span class="att-pct pct-low">{{ asistencia.porcentaje_asistencia }}%</span>
+        {% endif %}
+        <div class="lbl">% Asistencia</div>
+    </div>
+</div>
+
+<!-- RASGOS SOCIOAFECTIVOS -->
+<div class="section-title">Rasgos Socioafectivos (RSA)</div>
+
+{% if dimensiones_rsa %}
+<div class="rsa-grid">
+    {% for dimension, valor in dimensiones_rsa.items %}
+    <div class="rsa-item">
+        <span class="dim">{{ dimension|title }}</span>
+        <span class="rsa-badge rsa-{{ valor }}">{{ valor }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="color:#94a3b8;font-size:8.5pt;margin-top:6px;">Sin registros socioafectivos en este período.</p>
+{% endif %}
+
+{% if observaciones_rsa %}
+<div class="observaciones-box">
+    <strong>Observaciones del Docente:</strong> {{ observaciones_rsa }}
+</div>
+{% endif %}
+
+<!-- ESCALA DE CALIFICACIONES -->
+<div class="section-title" style="margin-top:14px">Escala de Calificaciones</div>
+<table style="font-size:8pt">
+    <thead>
+        <tr>
+            <th>Símbolo (ES)</th>
+            <th>Símbolo (EN)</th>
+            <th>Rango</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><span class="qual-badge badge-E">E</span></td><td>A</td><td>9.0 – 10.0</td><td>Excelente</td></tr>
+        <tr><td><span class="qual-badge badge-MB">MB</span></td><td>B</td><td>8.0 – 8.9</td><td>Muy Bueno</td></tr>
+        <tr><td><span class="qual-badge badge-Bk">B</span></td><td>C</td><td>7.0 – 7.9</td><td>Bueno</td></tr>
+        <tr><td><span class="qual-badge badge-Ak">A</span></td><td>D</td><td>6.0 – 6.9</td><td>Aprobado</td></tr>
+        <tr><td><span class="qual-badge badge-I">I</span></td><td>F</td><td>0.0 – 5.9</td><td>Insuficiente</td></tr>
+    </tbody>
+</table>
+
+<table style="font-size:8pt;margin-top:6px">
+    <thead><tr><th colspan="4">Rasgos Socioafectivos</th></tr></thead>
+    <tbody>
+        <tr>
+            <td><span class="rsa-badge rsa-MB">MB</span> Muy Bien</td>
+            <td><span class="rsa-badge rsa-B">B</span> Bien</td>
+            <td><span class="rsa-badge rsa-R">R</span> Regular</td>
+            <td><span class="rsa-badge rsa-I">I</span> Insuficiente</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- FIRMAS -->
+<div class="signatures">
+    <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">Firma del Director/a</div>
+        <div class="sig-sublabel">Sello institucional</div>
+    </div>
+    <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">Firma del Docente Tutor/a</div>
+        <div class="sig-sublabel">Nombre y matrícula</div>
+    </div>
+    <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">Firma del Padre / Tutor</div>
+        <div class="sig-sublabel">Acuse de recibo</div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <p>Documento generado automáticamente por SchoolManager Pro &bull; {{ fecha_emision }} &bull; Confidencial</p>
+</div>
+
+</body>
+</html>

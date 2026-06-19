@@ -1,0 +1,38 @@
+# Backend
+backend/.env
+backend/.env.local
+backend/db.sqlite3
+backend/.venv/
+backend/__pycache__/
+backend/*/__pycache__/
+backend/*/migrations/__pycache__/
+backend/staticfiles/
+backend/media/
+backend/*.pyc
+backend/.pylintrc
+backend/gunicorn.conf.py
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.DS_Store
+frontend/*.local
+
+# Tauri
+src-tauri/target/
+src-tauri/src-tauri.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+.env.local
+*.log

@@ -1,0 +1,126 @@
+.dashboard-calendar {
+  width: 100% !important;
+  max-width: 100%;
+  background: white;
+  border: none !important;
+  font-family: inherit;
+  line-height: 1.5em;
+}
+
+.dashboard-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.dashboard-calendar button:enabled:hover {
+  cursor: pointer;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #f1f5f9;
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: 0.85em;
+  color: #64748b;
+  padding-bottom: 10px;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+.react-calendar__tile {
+  max-width: 100%;
+  padding: 0;
+  background: none;
+  text-align: center;
+  font-size: 0.9em;
+  color: #3c4043; /* Google Calendar gray */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+}
+
+.react-calendar__tile:disabled {
+  background-color: transparent;
+  color: #c4c7c5;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #f1f3f4;
+  border-radius: 50%;
+}
+
+.react-calendar__tile--now {
+  background: #1a73e8; /* Google blue */
+  color: white !important;
+  font-weight: 500;
+  border-radius: 50%;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #bae6fd;
+}
+
+.react-calendar__tile--hasActive {
+  background: #3b82f6;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #2563eb;
+}
+
+.react-calendar__tile--active {
+  background: #e8f0fe !important; /* Light blue selection */
+  color: #1a73e8 !important;
+  font-weight: 600;
+  border-radius: 50%;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #2563eb !important;
+}
+
+/* Estilos específicos para feriados */
+.holiday-tile {
+  color: #d93025 !important; /* Google Red */
+  font-weight: 500;
+}
+
+.holiday-tile:enabled:hover,
+.holiday-tile:enabled:focus {
+  background-color: #fce8e6 !important; /* Light red hover */
+}
+
+/* El puntito de feriado más minimalista */
+.holiday-dot {
+  width: 4px;
+  height: 4px;
+  background-color: #d93025;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 8px;
+}
