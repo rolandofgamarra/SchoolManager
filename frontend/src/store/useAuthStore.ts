@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { secureStorage } from '../lib/secureStorage';
 
 export type AuthUser = {
   id: number;
@@ -17,33 +18,47 @@ type AuthState = {
   login: (access: string, refresh: string, user: AuthUser) => void;
   logout: () => void;
   setAvatarUrl: (url: string | null) => void;
+  hydrateFromStorage: () => Promise<void>;
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  isAuthenticated: !!localStorage.getItem('access_token'),
-  accessToken: localStorage.getItem('access_token'),
-  refreshToken: localStorage.getItem('refresh_token'),
-  user: JSON.parse(localStorage.getItem('user_profile') || 'null'),
+  isAuthenticated: false,
+  accessToken: null,
+  refreshToken: null,
+  user: null,
 
-  login: (access, refresh, user) => {
-    localStorage.setItem('access_token', access);
-    localStorage.setItem('refresh_token', refresh);
-    if (user) localStorage.setItem('user_profile', JSON.stringify(user));
+  login: async (access, refresh, user) => {
+    await secureStorage.setItem('access_token', access);
+    await secureStorage.setItem('refresh_token', refresh);
+    if (user) await secureStorage.setItem('user_profile', JSON.stringify(user));
     set({ isAuthenticated: true, accessToken: access, refreshToken: refresh, user });
   },
 
-  logout: () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_profile');
+  logout: async () => {
+    await secureStorage.removeItem('access_token');
+    await secureStorage.removeItem('refresh_token');
+    await secureStorage.removeItem('user_profile');
     set({ isAuthenticated: false, accessToken: null, refreshToken: null, user: null });
   },
 
-  setAvatarUrl: (url) => {
+  setAvatarUrl: async (url) => {
     const current = get().user;
     if (!current) return;
     const updated = { ...current, avatar_url: url };
-    localStorage.setItem('user_profile', JSON.stringify(updated));
+    await secureStorage.setItem('user_profile', JSON.stringify(updated));
     set({ user: updated });
+  },
+
+  hydrateFromStorage: async () => {
+    const token = await secureStorage.getItem('access_token');
+    const refresh = await secureStorage.getItem('refresh_token');
+    const profile = await secureStorage.getItem('user_profile');
+    const user = profile ? JSON.parse(profile) : null;
+    set({
+      isAuthenticated: !!token,
+      accessToken: token,
+      refreshToken: refresh,
+      user,
+    });
   },
 }));

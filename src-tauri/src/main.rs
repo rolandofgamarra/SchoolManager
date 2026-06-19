@@ -15,6 +15,7 @@ fn main() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_store::Builder::default().build())
         .manage(DbState {
             conn: Mutex::new(conn),
         })

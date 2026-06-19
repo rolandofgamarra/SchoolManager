@@ -1,4 +1,4 @@
-﻿import { API_BASE } from '../lib/api';
+﻿import { API_BASE, fetchWithAuth } from '../lib/api';
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useLangStore } from '../store/useLangStore';

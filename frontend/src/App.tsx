@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import { useAuthStore } from './store/useAuthStore';
@@ -30,7 +30,11 @@ function PageLoader() {
 }
 
 function App() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, hydrateFromStorage } = useAuthStore();
+
+  useEffect(() => {
+    hydrateFromStorage();
+  }, []);
 
   return (
     <BrowserRouter>
