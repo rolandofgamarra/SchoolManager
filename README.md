@@ -138,4 +138,3 @@ Privado (SchoolManager Pro)
 
 Rolando Gamarra | rolandofgamarra@gmail.com
 
-Auditoría & correcciones: Claude Sonnet 4.6
