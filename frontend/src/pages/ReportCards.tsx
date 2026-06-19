@@ -35,8 +35,8 @@ export default function ReportCards() {
   // Cargar grados y períodos al montar
   useEffect(() => {
     Promise.all([
-      fetch('/api/academics/grades/', { headers }).then(r => r.json()),
-      fetch('/api/academics/periods/', { headers }).then(r => r.json()),
+      fetchWithAuth('/api/academics/grades/', { headers }).then(r => r.json()),
+      fetchWithAuth('/api/academics/periods/', { headers }).then(r => r.json()),
     ]).then(([g, p]) => {
       const gradosList = g.results ?? g;
       const periodosList = p.results ?? p;
@@ -52,7 +52,7 @@ export default function ReportCards() {
     if (!selectedGrado) { setStudents([]); setSelectedStudent(null); return; }
     setLoadingStudents(true);
     setSelectedStudent(null);
-    fetch(`/api/academics/students/?grado=${selectedGrado}`, { headers })
+    fetchWithAuth(`/api/academics/students/?grado=${selectedGrado}`, { headers })
       .then(r => r.json())
       .then(d => setStudents(d.results ?? d))
       .catch(console.error)

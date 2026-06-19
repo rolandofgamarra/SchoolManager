@@ -39,7 +39,7 @@ export default function AttendanceRegister() {
 
   useEffect(() => {
     if (!accessToken) return;
-    fetch(`${API_BASE}/api/academics/grades/`, { headers })
+    fetchWithAuth(`${API_BASE}/api/academics/grades/`, { headers })
       .then(r => r.json())
       .then(d => setGrados(d.results || d))
       .catch(console.error);
@@ -49,7 +49,7 @@ export default function AttendanceRegister() {
     if (!selectedGrado) return;
     setIsLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/academics/students/?grado=${selectedGrado}`, { headers });
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/students/?grado=${selectedGrado}`, { headers });
       const data = await res.json();
       const list: Student[] = data.results || data;
       setStudents(list);
@@ -93,7 +93,7 @@ export default function AttendanceRegister() {
         fecha,
         records: Object.values(records),
       };
-      const res = await fetch(`${API_BASE}/api/academics/attendance/batch/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/attendance/batch/`, {
         method: 'POST',
         headers,
         body: JSON.stringify(payload),

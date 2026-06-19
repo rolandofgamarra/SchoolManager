@@ -36,7 +36,7 @@ export default function Header() {
       if (searchStr.length >= 2) {
         setIsSearching(true);
         const delayDebounceFn = setTimeout(() => {
-          fetch(`${API_BASE}/api/academics/students/?search=${searchStr}`, {
+          fetchWithAuth(`${API_BASE}/api/academics/students/?search=${searchStr}`, {
             headers: { 'Authorization': `Bearer ${accessToken}` }
           })
           .then(res => res.json())
@@ -82,7 +82,7 @@ export default function Header() {
       const today = new Date().toISOString().split('T')[0];
 
       try {
-        const res = await fetch(`${API_BASE}/api/academics/attendance/`, {
+        const res = await fetchWithAuth(`${API_BASE}/api/academics/attendance/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

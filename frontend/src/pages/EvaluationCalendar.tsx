@@ -40,8 +40,8 @@ export default function EvaluationCalendar() {
     try {
       const headers = { 'Authorization': `Bearer ${accessToken}` };
       const [resMaterias, resPeriodos] = await Promise.all([
-        fetch(`${API_BASE}/api/academics/subjects/`, { headers }),
-        fetch(`${API_BASE}/api/academics/periods/`, { headers })
+        fetchWithAuth(`${API_BASE}/api/academics/subjects/`, { headers }),
+        fetchWithAuth(`${API_BASE}/api/academics/periods/`, { headers })
       ]);
       if (resMaterias.ok) setMaterias((await resMaterias.json()).results || []);
       if (resPeriodos.ok) setPeriodos((await resPeriodos.json()).results || []);
@@ -54,7 +54,7 @@ export default function EvaluationCalendar() {
     setIsLoading(true);
     try {
       // In a real scenario we could filter by month, here we fetch all for the teacher
-      const res = await fetch(`${API_BASE}/api/academics/evaluations/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/evaluations/`, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       });
       if (res.ok) {
@@ -93,7 +93,7 @@ export default function EvaluationCalendar() {
         fecha: format(selectedDate, 'yyyy-MM-dd')
       };
 
-      const res = await fetch(`${API_BASE}/api/academics/evaluations/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/evaluations/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

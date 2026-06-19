@@ -36,9 +36,9 @@ export default function ClassManagement() {
     const headers = { 'Authorization': `Bearer ${accessToken}` };
     try {
       const [resG, resS, resSub] = await Promise.all([
-        fetch(`${API_BASE}/api/academics/grades/`, { headers }),
-        fetch(`${API_BASE}/api/academics/students/`, { headers }),
-        fetch(`${API_BASE}/api/academics/subjects/`, { headers })
+        fetchWithAuth(`${API_BASE}/api/academics/grades/`, { headers }),
+        fetchWithAuth(`${API_BASE}/api/academics/students/`, { headers }),
+        fetchWithAuth(`${API_BASE}/api/academics/subjects/`, { headers })
       ]);
       const gData = await resG.json();
       const stData = await resS.json();
@@ -52,7 +52,7 @@ export default function ClassManagement() {
   const handleCreateGrade = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API_BASE}/api/academics/grades/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/grades/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
         body: JSON.stringify({ nombre: gradeName, nivel: 'PRIMARIA' }) // nivel por defecto
@@ -69,7 +69,7 @@ export default function ClassManagement() {
   const handleCreateSubject = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API_BASE}/api/academics/subjects/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/subjects/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
         body: JSON.stringify({ nombre: subjectName, grado: selectedGradeForSubj })
@@ -86,7 +86,7 @@ export default function ClassManagement() {
   const handleCreateStudent = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API_BASE}/api/academics/students/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/students/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
         body: JSON.stringify({ 
@@ -108,7 +108,7 @@ export default function ClassManagement() {
   const handleCreateParent = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API_BASE}/api/users/quick-parent/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/users/quick-parent/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
         body: JSON.stringify({ 

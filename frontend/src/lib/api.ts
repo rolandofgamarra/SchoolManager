@@ -3,6 +3,10 @@
 // En producción, usar la variable de entorno VITE_API_URL.
 export const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
+// Primary fetch method — use this instead of window.fetch for API calls
+// Automatically handles JWT refresh on 401
+export { fetchWithAuth } from './fetchWithAuth';
+
 export function authHeaders(token: string | null): HeadersInit {
   return {
     'Authorization': `Bearer ${token ?? ''}`,

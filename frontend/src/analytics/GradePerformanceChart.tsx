@@ -35,7 +35,7 @@ export default function GradePerformanceChart() {
         }
         
         // Using Grado 1, Periodo 1 as the default for the dashboard
-        const res = await fetch(`${API_BASE}/api/analytics/grades/1/periods/1/`, { headers });
+        const res = await fetchWithAuth(`${API_BASE}/api/analytics/grades/1/periods/1/`, { headers });
         
         if (res.ok) {
           const backendData: BackendStat[] = await res.json();

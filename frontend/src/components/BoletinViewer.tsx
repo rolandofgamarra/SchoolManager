@@ -132,7 +132,7 @@ export default function BoletinViewer({ alumnoId, periodoId, showDownload = true
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/reports/boletin/${alumnoId}/${periodoId}/`, {
+      const res = await fetchWithAuth(`/api/reports/boletin/${alumnoId}/${periodoId}/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       if (!res.ok) throw new Error(`Error ${res.status}`);
@@ -149,7 +149,7 @@ export default function BoletinViewer({ alumnoId, periodoId, showDownload = true
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      const res = await fetch(`/api/reports/boletin/${alumnoId}/${periodoId}/pdf/`, {
+      const res = await fetchWithAuth(`/api/reports/boletin/${alumnoId}/${periodoId}/pdf/`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const ct = res.headers.get('content-type') ?? '';

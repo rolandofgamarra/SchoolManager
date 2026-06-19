@@ -46,8 +46,8 @@ export default function RsaEvaluation() {
     try {
       const headers = { 'Authorization': `Bearer ${accessToken}` };
       const [resSt, resPe] = await Promise.all([
-        fetch(`${API_BASE}/api/academics/students/`, { headers }),
-        fetch(`${API_BASE}/api/academics/periods/`, { headers })
+        fetchWithAuth(`${API_BASE}/api/academics/students/`, { headers }),
+        fetchWithAuth(`${API_BASE}/api/academics/periods/`, { headers })
       ]);
       const stData = await resSt.json();
       const peData = await resPe.json();
@@ -108,7 +108,7 @@ export default function RsaEvaluation() {
         observaciones: observaciones
       };
 
-      const res = await fetch(`${API_BASE}/api/academics/affective/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/academics/affective/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

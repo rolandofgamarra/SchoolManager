@@ -30,7 +30,7 @@ export default function AnnouncementModal({ isOpen, onClose, dict }: Announcemen
         payload.grade_id = gradeId;
       }
 
-      const res = await fetch(`${API_BASE}/api/users/announcement/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/users/announcement/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

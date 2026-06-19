@@ -51,7 +51,7 @@ export default function ProfileModal({ onClose }: Props) {
 
     setUploading(true);
     try {
-      const res = await fetch('/api/users/avatar/', {
+      const res = await fetchWithAuth('/api/users/avatar/', {
         method: 'POST',
         headers: { Authorization: `Bearer ${accessToken}` },
         body: form,
@@ -77,7 +77,7 @@ export default function ProfileModal({ onClose }: Props) {
     setSuccess(false);
     setRemoving(true);
     try {
-      const res = await fetch('/api/users/avatar/', {
+      const res = await fetchWithAuth('/api/users/avatar/', {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${accessToken}` },
       });

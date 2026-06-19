@@ -24,12 +24,12 @@ export default function StudentProgress() {
     if (!accessToken || !id) return;
     const h = { Authorization: `Bearer ${accessToken}` };
 
-    fetch(`/api/academics/students/${id}/`, { headers: h })
+    fetchWithAuth(`/api/academics/students/${id}/`, { headers: h })
       .then(r => r.json())
       .then(setStudent)
       .catch(console.error);
 
-    fetch('/api/academics/periods/', { headers: h })
+    fetchWithAuth('/api/academics/periods/', { headers: h })
       .then(r => r.json())
       .then(d => {
         const list: Periodo[] = d.results ?? d;

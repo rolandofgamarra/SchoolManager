@@ -33,7 +33,7 @@ export default function AnnualPlans() {
   const fetchPlans = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`${API_BASE}/api/planes-anuales/?tipo=${activeTab}`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/planes-anuales/?tipo=${activeTab}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -75,7 +75,7 @@ export default function AnnualPlans() {
     }
 
     try {
-      const res = await fetch(`${API_BASE}/api/planes-anuales/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/planes-anuales/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${accessToken}`
@@ -100,7 +100,7 @@ export default function AnnualPlans() {
   const handleDelete = async (id: number) => {
     if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
     try {
-      const res = await fetch(`${API_BASE}/api/planes-anuales/${id}/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/planes-anuales/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${accessToken}`

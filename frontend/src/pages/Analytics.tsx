@@ -22,7 +22,7 @@ export default function Analytics() {
   const fetchAtRisk = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`${API_BASE}/api/analytics/at-risk/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/analytics/at-risk/`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -39,7 +39,7 @@ export default function Analytics() {
   const fetchMissing = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`${API_BASE}/api/analytics/missing-assignments/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/analytics/missing-assignments/`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }

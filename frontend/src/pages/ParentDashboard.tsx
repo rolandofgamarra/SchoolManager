@@ -1,4 +1,4 @@
-﻿import { API_BASE } from '../lib/api';
+﻿import { API_BASE, fetchWithAuth } from '../lib/api';
 import { GraduationCap, ArrowRight } from 'lucide-react';
 import { useLangStore } from '../store/useLangStore';
 import { useAuthStore } from '../store/useAuthStore';
@@ -18,7 +18,7 @@ export default function ParentDashboard() {
   useEffect(() => {
     const fetchChildren = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/academics/students/`, {
+        const res = await fetchWithAuth(`${API_BASE}/api/academics/students/`, {
           headers: { 'Authorization': `Bearer ${accessToken}` }
         });
         if (res.ok) {

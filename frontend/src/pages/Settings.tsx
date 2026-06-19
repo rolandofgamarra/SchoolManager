@@ -41,7 +41,7 @@ export default function Settings() {
 
   useEffect(() => {
     // Fetch initial settings
-    fetch(`${API_BASE}/api/tenant/settings/`, { headers: authHeaders })
+    fetchWithAuth(`${API_BASE}/api/tenant/settings/`, { headers: authHeaders })
       .then(res => res.json())
       .then(data => {
         if (data.nombre) setValue('nombre', data.nombre);
@@ -55,7 +55,7 @@ export default function Settings() {
     setIsSaving(true);
     setSuccessMsg("");
     try {
-      const res = await fetch(`${API_BASE}/api/tenant/settings/`, {
+      const res = await fetchWithAuth(`${API_BASE}/api/tenant/settings/`, {
         method: 'PUT',
         headers: authHeaders,
         body: JSON.stringify(data)

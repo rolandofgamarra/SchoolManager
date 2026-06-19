@@ -29,9 +29,9 @@ export default function Gradebook() {
       try {
         const headers = { 'Authorization': `Bearer ${accessToken}` };
         const [resGrados, resMaterias, resPeriodos] = await Promise.all([
-          fetch(`${API_BASE}/api/academics/grades/`, { headers }),
-          fetch(`${API_BASE}/api/academics/subjects/`, { headers }),
-          fetch(`${API_BASE}/api/academics/periods/`, { headers })
+          fetchWithAuth(`${API_BASE}/api/academics/grades/`, { headers }),
+          fetchWithAuth(`${API_BASE}/api/academics/subjects/`, { headers }),
+          fetchWithAuth(`${API_BASE}/api/academics/periods/`, { headers })
         ]);
         
         if (resGrados.ok) setGrados((await resGrados.json()).results || []);
@@ -62,12 +62,12 @@ export default function Gradebook() {
     try {
       const headers = { 'Authorization': `Bearer ${accessToken}` };
       
-      const resStudents = await fetch(`${API_BASE}/api/academics/students/?grado=${selectedGrado}`, { headers });
+      const resStudents = await fetchWithAuth(`${API_BASE}/api/academics/students/?grado=${selectedGrado}`, { headers });
       const studentsData = await resStudents.json();
       const studentsList = studentsData.results || studentsData;
       setStudents(studentsList);
 
-      const resEvals = await fetch(`${API_BASE}/api/academics/evaluations/?materia=${selectedMateria}&periodo=${selectedPeriodo}`, { headers });
+      const resEvals = await fetchWithAuth(`${API_BASE}/api/academics/evaluations/?materia=${selectedMateria}&periodo=${selectedPeriodo}`, { headers });
       const evalsData = await resEvals.json();
       const evalsList = evalsData.results || evalsData;
       setEvaluations(evalsList);
@@ -76,7 +76,7 @@ export default function Gradebook() {
       inputRefs.current = Array(studentsList.length).fill(null).map(() => Array(evalsList.length).fill(null));
 
       // Fetch Notes filtradas por materia y periodo directamente desde el backend
-      const resNotes = await fetch(`${API_BASE}/api/academics/notes/?evaluacion__materia=${selectedMateria}&evaluacion__periodo=${selectedPeriodo}`, { headers });
+      const resNotes = await fetchWithAuth(`${API_BASE}/api/academics/notes/?evaluacion__materia=${selectedMateria}&evaluacion__periodo=${selectedPeriodo}`, { headers });
       const notesData = await resNotes.json();
       const allNotes = notesData.results || notesData;
 
@@ -117,7 +117,7 @@ export default function Gradebook() {
         method = 'PUT';
       }
 
-      const res = await fetch(url, {
+      const res = await fetchWithAuth(url, {
         method,
         headers: {
           'Content-Type': 'application/json',

@@ -95,7 +95,7 @@ export default function Dashboard() {
 
     const fetchStats = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/analytics/dashboard/`, { headers: authHeaders });
+        const res = await fetchWithAuth(`${API_BASE}/api/analytics/dashboard/`, { headers: authHeaders });
         if (res.ok) setStats(await res.json());
       } catch { /* silencio */ } finally { setIsLoading(false); }
     };
@@ -103,7 +103,7 @@ export default function Dashboard() {
     const fetchAlerts = async () => {
       if (!accessToken) { setAlertsLoading(false); return; }
       try {
-        const res = await fetch(`${API_BASE}/api/analytics/alerts/`, { headers: authHeaders });
+        const res = await fetchWithAuth(`${API_BASE}/api/analytics/alerts/`, { headers: authHeaders });
         if (res.ok) setAlerts(await res.json());
       } catch { /* silencio */ } finally { setAlertsLoading(false); }
     };

@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 from datetime import timedelta
 from pathlib import Path
 
@@ -76,21 +77,21 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # ---------------------------------------------------------------------------
 # Database
-# CONN_MAX_AGE=60 reutiliza conexiones hasta 60 s, evita overhead de handshake
-# en cada request cuando hay 50 docentes concurrentes.
-# En producción reemplazar por PostgreSQL.
+# Usa DATABASE_URL para PostgreSQL en producción, SQLite en desarrollo.
+# CONN_MAX_AGE=60 reutiliza conexiones, evita overhead de handshake.
 # ---------------------------------------------------------------------------
+_db_default = f'sqlite:///{BASE_DIR / "db.sqlite3"}'
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'CONN_MAX_AGE': 60,
-        'OPTIONS': {
-            # WAL mode: permite lecturas concurrentes mientras hay escrituras
-            'timeout': 20,
-        },
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL', _db_default),
+        conn_max_age=60,
+        conn_health_checks=True,
+    )
 }
+
+# Mantener WAL timeout para SQLite en desarrollo
+if DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
+    DATABASES['default'].setdefault('OPTIONS', {})['timeout'] = 20
 
 AUTH_USER_MODEL = 'users.User'
 
