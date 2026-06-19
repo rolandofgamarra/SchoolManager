@@ -29,6 +29,7 @@ from academics.views import (
 
 # Register academics viewsets with DRF DefaultRouter
 router = DefaultRouter()
+# Spanish names (canonical)
 router.register(r'grados', GradeLevelViewSet, basename='grado')
 router.register(r'alumnos', StudentViewSet, basename='alumno')
 router.register(r'materias', SubjectViewSet, basename='materia')
@@ -38,6 +39,16 @@ router.register(r'notas', NoteViewSet, basename='nota')
 router.register(r'asistencia', AttendanceViewSet, basename='asistencia')
 router.register(r'socioafectivo', AffectiveViewSet, basename='socioafectivo')
 router.register(r'planes-anuales', AnnualPlanViewSet, basename='plan-anual')
+
+# English aliases for frontend compatibility
+router.register(r'academics/grades', GradeLevelViewSet, basename='grade-alias')
+router.register(r'academics/students', StudentViewSet, basename='student-alias')
+router.register(r'academics/subjects', SubjectViewSet, basename='subject-alias')
+router.register(r'academics/periods', PeriodViewSet, basename='period-alias')
+router.register(r'academics/evaluations', EvaluationViewSet, basename='evaluation-alias')
+router.register(r'academics/notes', NoteViewSet, basename='note-alias')
+router.register(r'academics/attendance', AttendanceViewSet, basename='attendance-alias')
+router.register(r'academics/affective', AffectiveViewSet, basename='affective-alias')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
